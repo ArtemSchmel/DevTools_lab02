@@ -1,2 +1,2 @@
-# DevTools_lab01
-DevTools 01 (Кочаров Артём, Д19-191-1)
+# DevTools_lab02
+DevTools 02 (Кочаров Артём, Д19-191-1)
