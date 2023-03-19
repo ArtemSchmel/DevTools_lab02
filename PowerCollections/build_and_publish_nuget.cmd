@@ -1,0 +1,1 @@
+dotnet nuget push "PowerCollections\bin\Debug\artemschmel.PowerCollections*.nupkg" —api-key "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" —source "github" —skip-duplicate
