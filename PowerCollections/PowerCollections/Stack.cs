@@ -22,8 +22,8 @@ namespace PowerCollections
 
         public int Capacity { get; } 
 
-        public Stack(int size)
-        {
+        public Stack(int size
+        
             
             if (size <= 0)
                 throw new ArgumentOutOfRangeException();
