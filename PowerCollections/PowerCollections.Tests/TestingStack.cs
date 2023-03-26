@@ -60,7 +60,7 @@ namespace PowerCollections.Tests
             stack.Push(3);
             stack.Push(4);
 
-            Assert.AreEqual(4, stack.Count);
+            Assert.AreEqual(1000, stack.Count);
         }
 
 
