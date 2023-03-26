@@ -1,0 +1,49 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: release package
+
+on: workflow_dispatch
+
+jobs:
+  package:
+
+    runs-on: windows-latest
+
+    permissions:
+      packages: write
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Create package
+      run: dotnet pack 
+      working-directory: PowerCollections
+    - name: Publish package
+      run: dotnet nuget push "PowerCollections\bin\Debug\artemschmel.PowerCollections*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/ArtemSchmel/index.json --skip-duplicate
+      working-directory: PowerCollections
+      
+    - name: version_pref
+      id: get_version_pref
+      uses: mavrosxristoforos/get-xml-info@1.1.1
+      with:
+        xml-file: 'PowerCollections\PowerCollections\PowerCollections.csproj'
+        xpath: '//VersionPrefix'
+        
+    - name: version_suff
+      id: get_version_suff
+      uses: mavrosxristoforos/get-xml-info@1.1.1
+      with:
+        xml-file: 'PowerCollections\PowerCollections\PowerCollections.csproj'
+        xpath: '//VersionSuffix'
+
+    - name: Package release
+      uses: ncipollo/release-action@v1.12.0
+      with:
+        artifacts: 'PowerCollections\PowerCollections\bin\Debug\artemschmel.PowerCollections.${{ steps.get_version_pref.outputs.info }}-${{ steps.get_version_suff.outputs.info }}.nupkg'
+        tag: 'v${{ steps.get_version_pref.outputs.info }}-${{ steps.get_version_suff.outputs.info }}'
+        token:  ${{ secrets.GITHUB_TOKEN }} 
